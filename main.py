@@ -1,7 +1,11 @@
 import conf 
 import discord
 
-client = discord.Client()
+intense = discord.Intents.default()
+intense.members = True
+client = discord.Client(intents=intense)
+
+cId = 825309259578474496
 
 @client.event
 async def on_message(message):
@@ -16,23 +20,57 @@ async def on_message(message):
     if message.author.bot:
         return
 
-    if message.channel.id == 825309259578474496 or message.channel.id == 749622584659935285:
+    if message.channel.id == cId:
         msg = None
         
 
-    if message.content == "!hello":
-        msg = f'Hello, {message.author.name}, i am {client.user.name}'
+        ctx = message.content.split(" ", maxsplit=1)
     
-    if message.content == "!abme":
-        if message.author.nick != None:
-        msg = f'Ты {message.author.name}, так же известный, как {message.author.nick}'
-        else:
-        msg = f'Ты {message.author.name}'
-
-
-
-    if msg != None:
-        await message.channel.send(msg)
+        #hello
+        if message.content == "!hello":
+            msg = f'Ку, {message.author.name}, я {client.user.name}'
+        
+        
+    
+        #about_me
+        if message.content == "!abme":
+            if message.author.nick != None:
+                msg = f'Ты {message.author.name}, так же известный, как {message.author.nick}'
+            else:
+                msg = f'Ты {message.author.name}'
+    
+        #repeat
+        if ctx[0] == "!repeat":
+            msg  = ctx[1]
+    
+        #get_member 
+        if ctx[0] == "!get_member":
+            pass
+    
+        #get_members
+        if message.content == "!get_members":
+            msg = " "
+            if message.author.guild.name == "Bots":
+                for idx, member in list(enumerate(message.author.guild.members)):
+                    msg += f'{idx+1}. {member.name} { f"[{member.nick}]" if member.nick else " "} - {member.id}\n'
+                    
+        #get_сhannels
+    
+    
+        #goto {id/name}
+            
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        if msg != None:
+            await message.channel.send(msg)
 
 
 client.run(conf.bot_token)
